@@ -30,6 +30,7 @@ namespace AdventOfCode
             return day switch
             {
                 1 => new Challenge01(),
+                2 => new Challenge02(),
 
                 _ => throw new Exception("puzzle not found!"),
             };
