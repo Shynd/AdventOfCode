@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdventOfCode.Common;
+using System;
 using System.IO;
 
 namespace AdventOfCode.Challenges
@@ -10,6 +11,8 @@ namespace AdventOfCode.Challenges
         public string Title => "Sunny with a Chance of Asteroids";
 
         public string[] Input { get; private set; }
+
+        private IntCodeComputer Computer { get; set; }
 
         public bool LoadInput()
         {
@@ -31,7 +34,16 @@ namespace AdventOfCode.Challenges
 
         public string PartOne()
         {
-            return string.Empty;
+            var input = Input[0].Split(',');
+            var program = new int[input.Length];
+            for (var i = 0; i < input.Length; i++)
+                program[i] = int.Parse(input[i]);
+
+            Computer = new IntCodeComputer();
+            Computer.LoadProgram(program);
+
+            Computer.Solve(false);
+            return Computer.Output.ToString();
         }
 
         public string PartTwo()
