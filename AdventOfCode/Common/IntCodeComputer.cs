@@ -12,6 +12,7 @@ namespace AdventOfCode.Common
         public int PC { get; private set; }
 
         public int Output { get; private set; }
+        public int? Input { get; set; }
 
         public void LoadProgram(int[] program)
         {
@@ -65,8 +66,7 @@ namespace AdventOfCode.Common
 
                 Opcode.Input => ((Func<int>)(() =>
                 {
-                    Console.Write($"input > ");
-                    ram[ram[pc + FIRST_PARAM]] = int.Parse(Console.ReadLine());
+                    ram[ram[pc + FIRST_PARAM]] = Input ?? int.Parse(Console.ReadLine());
                     return 2; // increment PC by 2 (opcode + only parameter)
                 }))(),
 
@@ -74,6 +74,50 @@ namespace AdventOfCode.Common
                 {
                     Output = ram[ram[pc + FIRST_PARAM]];
                     return 2; // increment PC by 2 (opcode + only parameter)
+                }))(),
+
+                /// <summary>
+                /// Jumps if first param is NOT zero, otherwise does nothing.
+                /// </summary>
+                Opcode.Jnz => ((Func<int>)(() =>
+                {
+                    if (RetrieveParamValue(firstParamMode, ram, pc + FIRST_PARAM) != 0)
+                    {
+                        return RetrieveParamValue(secondParamMode, ram, pc + SECOND_PARAM) - pc;
+                    }
+                    return 3; // increment PC by 3 (opcode + param 1 + param 2)
+                }))(),
+
+                /// <summary>
+                /// Jumps if first param is zero, otherwise does nothing.
+                /// </summary>
+                Opcode.Jz => ((Func<int>)(() =>
+                {
+                    if (RetrieveParamValue(firstParamMode, ram, pc + FIRST_PARAM) == 0)
+                    {
+                        return RetrieveParamValue(secondParamMode, ram, pc + SECOND_PARAM) - pc;
+                    }
+                    return 3; // increment PC by 3 (opcode + param 1 + param 2)
+                }))(),
+
+                Opcode.LessThan => ((Func<int>)(() =>
+                {
+                    if (RetrieveParamValue(firstParamMode, ram, pc + FIRST_PARAM) <
+                        RetrieveParamValue(secondParamMode, ram, pc + SECOND_PARAM))
+                        ram[ram[pc + RESULT_OFFSET]] = 1;
+                    else
+                        ram[ram[pc + RESULT_OFFSET]] = 0;
+                    return 4; // increment PC by 4 (opcode + 3 parameters)
+                }))(),
+
+                Opcode.Equals => ((Func<int>)(() =>
+                {
+                    if (RetrieveParamValue(firstParamMode, ram, pc + FIRST_PARAM) ==
+                        RetrieveParamValue(secondParamMode, ram, pc + SECOND_PARAM))
+                        ram[ram[pc + RESULT_OFFSET]] = 1;
+                    else
+                        ram[ram[pc + RESULT_OFFSET]] = 0;
+                    return 4; // increment PC by 4 (opcode + 3 parameters)
                 }))(),
 
                 Opcode.Halt => ((Func<int>)(() =>
@@ -103,6 +147,10 @@ namespace AdventOfCode.Common
             Mult = 2,
             Input = 3,
             Output = 4,
+            Jnz = 5,
+            Jz = 6,
+            LessThan = 7,
+            Equals = 8,
 
             Halt = 99
         }
