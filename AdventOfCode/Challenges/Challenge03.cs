@@ -5,7 +5,7 @@ namespace AdventOfCode.Challenges
 {
     public class Challenge03 : IChallenge
     {
-        public int Day => 02;
+        public int Day => 03;
         public int Year => 2019;
         public string Title => "Crossed Wires";
 

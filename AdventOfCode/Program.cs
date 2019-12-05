@@ -21,8 +21,6 @@ namespace AdventOfCode
             {
                 ExitWithMessage($"could not find input file for challenge number {Challenge.Day}");
             }
-
-            Console.ReadLine();
         }
 
         private static IChallenge LoadChallenge(int day)
@@ -33,6 +31,7 @@ namespace AdventOfCode
                 2 => new Challenge02(),
                 3 => new Challenge03(),
                 4 => new Challenge04(),
+                5 => new Challenge05(),
 
                 _ => throw new Exception("puzzle not found!"),
             };

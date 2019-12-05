@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdventOfCode.Common;
+using System;
 using System.IO;
 
 namespace AdventOfCode.Challenges
@@ -10,6 +11,8 @@ namespace AdventOfCode.Challenges
         public string Title => "Program Alarm";
 
         public string[] Input { get; private set; }
+
+        private IntCodeComputer Computer { get; set; }
 
         public bool LoadInput()
         {
@@ -25,18 +28,25 @@ namespace AdventOfCode.Challenges
         public void Solve()
         {
             Console.WriteLine($"Challenge {Day}: {Title}");
+
+            var input = Input[0].Split(',');
+            var program = new int[input.Length];
+            for (var i = 0; i < input.Length; i++)
+                program[i] = int.Parse(input[i]);
+
+            // restore gravity assist program
+            program[1] = 12;
+            program[2] = 2;
+
+            Computer = new IntCodeComputer();
+            Computer.LoadProgram(program);
+
             Console.WriteLine($"Result part one: {PartOne()}");
             Console.WriteLine($"Result part two: {PartTwo()}");
         }
 
-        public string PartOne()
-        {
-            return string.Empty;
-        }
+        public string PartOne() => Computer.Solve(false);
 
-        public string PartTwo()
-        {
-            return string.Empty;
-        }
+        public string PartTwo() => string.Empty;
     }
 }

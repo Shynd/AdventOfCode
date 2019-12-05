@@ -3,11 +3,11 @@ using System.IO;
 
 namespace AdventOfCode.Challenges
 {
-    public class Challenge04 : IChallenge
+    public class Challenge05 : IChallenge
     {
-        public int Day => 04;
+        public int Day => 05;
         public int Year => 2019;
-        public string Title => "Secure Container";
+        public string Title => "Sunny with a Chance of Asteroids";
 
         public string[] Input { get; private set; }
 
