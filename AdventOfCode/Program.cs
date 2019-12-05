@@ -31,6 +31,7 @@ namespace AdventOfCode
             {
                 1 => new Challenge01(),
                 2 => new Challenge02(),
+                3 => new Challenge03(),
 
                 _ => throw new Exception("puzzle not found!"),
             };
